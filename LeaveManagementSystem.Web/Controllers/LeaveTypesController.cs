@@ -104,7 +104,7 @@ namespace LeaveManagementSystem.Web.Controllers
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
-                {
+                { 
                     if (!LeaveTypeExists(leaveType.Id))
                     {
                         return NotFound();
