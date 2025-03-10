@@ -21,7 +21,7 @@ namespace LeaveManagementSystem.Web.Controllers
         // GET: LeaveTypes
         public async Task<IActionResult> Index()
         {
-            // var data = SELECT * FROM LeaveTypes
+             // var data = SELECT * FROM LeaveTypes
             var  data = await _context.LeaveTypes.ToListAsync();
             return View(data);
         }
