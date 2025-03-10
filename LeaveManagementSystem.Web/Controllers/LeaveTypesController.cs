@@ -128,7 +128,7 @@ namespace LeaveManagementSystem.Web.Controllers
             }
 
             var leaveType = await _context.LeaveTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id); 
             if (leaveType == null)
             {
                 return NotFound();
@@ -138,7 +138,8 @@ namespace LeaveManagementSystem.Web.Controllers
         }
 
         // POST: LeaveTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
