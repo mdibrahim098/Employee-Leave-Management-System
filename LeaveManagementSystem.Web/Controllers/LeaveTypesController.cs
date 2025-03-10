@@ -33,12 +33,13 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 return NotFound();
             }
-
+            // Parameterization - key for preventing SQL Injection
+            // select * from LeaveTypes where Id = @id
             var leaveType = await _context.LeaveTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (leaveType == null)
             {
-                return NotFound();
+                return NotFound();// 404 error
             }
 
             return View(leaveType);
@@ -73,11 +74,12 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 return NotFound();
             }
-
+            // Parameterization - key for preventing SQL Injection
+            // select * from LeaveTypes where Id = @id
             var leaveType = await _context.LeaveTypes.FindAsync(id);
             if (leaveType == null)
             {
-                return NotFound();
+                return NotFound(); // 404 error
             }
             return View(leaveType);
         }
