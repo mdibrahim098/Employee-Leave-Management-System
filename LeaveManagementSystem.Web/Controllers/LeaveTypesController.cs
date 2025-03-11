@@ -74,6 +74,10 @@ namespace LeaveManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate )
         {
+            if(leaveTypeCreate.Name.Contains("vacation"))
+            {
+                ModelState.AddModelError(nameof(leaveTypeCreate.Name), "Name should not contain vacation");
+            }
             if (ModelState.IsValid)
             {
                 var leaveType = _mapper.Map<LeaveType>(leaveTypeCreate);
