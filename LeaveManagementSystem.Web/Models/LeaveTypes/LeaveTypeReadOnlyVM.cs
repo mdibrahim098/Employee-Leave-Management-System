@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace LeaveManagementSystem.Web.Models.LeaveTypes
+﻿namespace LeaveManagementSystem.Web.Models.LeaveTypes
 {
     public class LeaveTypeReadOnlyVM
     {
@@ -8,6 +6,5 @@ namespace LeaveManagementSystem.Web.Models.LeaveTypes
         public string Name { get; set; } = string.Empty;
         public int NumberOfDays { get; set; }
     }
-
          
 }
