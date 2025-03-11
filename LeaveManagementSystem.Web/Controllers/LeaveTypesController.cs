@@ -35,7 +35,7 @@ namespace LeaveManagementSystem.Web.Controllers
             //    NumberOfDays = q.NumberOfDays
             //});
             // use auto mapper
-           var viewData = _mapper.Map<List<IndexVM>>(data);
+           var viewData = _mapper.Map<List<LeaveTypeReadOnlyVM>>(data);
           // return the view model to the view
             return View(viewData);
         }
@@ -56,7 +56,9 @@ namespace LeaveManagementSystem.Web.Controllers
                 return NotFound();// 404 error
             }
 
-            return View(leaveType);
+            var viewData = _mapper.Map<LeaveTypeReadOnlyVM>(leaveType);
+
+            return View(viewData);
         }
 
         // GET: LeaveTypes/Create
