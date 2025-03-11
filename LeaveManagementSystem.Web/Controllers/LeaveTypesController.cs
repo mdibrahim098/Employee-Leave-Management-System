@@ -15,6 +15,7 @@ namespace LeaveManagementSystem.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private const string NameExistesvalidationMessage = "This Leave Type already exists in the database.";
 
         public LeaveTypesController(ApplicationDbContext context,IMapper mapper)
         {
@@ -75,10 +76,11 @@ namespace LeaveManagementSystem.Web.Controllers
         public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate )
         {
             //adding custom validation model state error.
-            //if(leaveTypeCreate.Name.Contains("vacation"))
-            //{
-            //    ModelState.AddModelError(nameof(leaveTypeCreate.Name), "Name should not contain vacation");
-            //}
+            if (await CheckIfLeaveTypeExists(leaveTypeCreate.Name))
+            {
+
+               ModelState.AddModelError(nameof(leaveTypeCreate.Name), NameExistesvalidationMessage);
+            }
             if (ModelState.IsValid)
             {
                 var leaveType = _mapper.Map<LeaveType>(leaveTypeCreate);
@@ -88,6 +90,7 @@ namespace LeaveManagementSystem.Web.Controllers
             }
             return View(leaveTypeCreate);
         }
+
 
         // GET: LeaveTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -120,6 +123,13 @@ namespace LeaveManagementSystem.Web.Controllers
                 return NotFound();
             }
 
+            //adding custom validation model state error.
+            if (await CheckIfLeaveTypeExistsForEdit(leaveTypeEdit))
+            {
+
+                ModelState.AddModelError(nameof(leaveTypeEdit.Name),NameExistesvalidationMessage );
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -143,6 +153,7 @@ namespace LeaveManagementSystem.Web.Controllers
             }
             return View(leaveTypeEdit);
         }
+
 
         // GET: LeaveTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -181,6 +192,18 @@ namespace LeaveManagementSystem.Web.Controllers
         private bool LeaveTypeExists(int id)
         {
             return _context.LeaveTypes.Any(e => e.Id == id);
+        }
+
+        private async Task<bool> CheckIfLeaveTypeExists(string name)
+        {
+            var lowerCaseName = name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowerCaseName));
+        }
+        private async Task<bool> CheckIfLeaveTypeExistsForEdit(LeaveTypeEditVM leaveTypeEdit)
+        {
+            var lowerCaseName = leaveTypeEdit.Name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowerCaseName) && 
+                q.Id != leaveTypeEdit.Id);
         }
     }
 }
