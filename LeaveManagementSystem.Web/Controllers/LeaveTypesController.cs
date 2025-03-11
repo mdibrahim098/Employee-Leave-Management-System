@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LeaveManagementSystem.Web.Data;
 using LeaveManagementSystem.Web.Models.LeaveTypes;
+using AutoMapper;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
     public class LeaveTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public LeaveTypesController(ApplicationDbContext context)
+        public LeaveTypesController(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            this._mapper = mapper;
         }
 
         // GET: LeaveTypes
@@ -25,12 +28,14 @@ namespace LeaveManagementSystem.Web.Controllers
              // var data = SELECT * FROM LeaveTypes
             var  data = await _context.LeaveTypes.ToListAsync();
             //Convert the dsatmodel into a view model
-            var viewData = data.Select(q => new IndexVM
-            {
-                Id = q.Id,
-                Name = q.Name,
-                Days = q.NumberOfDays
-            });
+            //var viewData = data.Select(q => new IndexVM
+            //{
+            //    Id = q.Id,
+            //    Name = q.Name,
+            //    NumberOfDays = q.NumberOfDays
+            //});
+            // use auto mapper
+           var viewData = _mapper.Map<List<IndexVM>>(data);
           // return the view model to the view
             return View(viewData);
         }
